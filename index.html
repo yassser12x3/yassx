@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genshin-Inspired File Upload</title>
+    <title>Genshin-Inspired File Upload & Blog</title>
     <style>
         /* General Reset */
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url('https://images3.alphacoders.com/136/thumbbig-1362745.webp'); /* Replace with your background image URL */
+            background-image: url('https://example.com/path/to/your/background.jpg'); /* Replace with your background image URL */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -52,6 +52,12 @@
 
         nav ul li a:hover {
             color: #ff9a9e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .upload-section {
@@ -127,6 +133,44 @@
             background-color: #fad0c4;
         }
 
+        .blog-section {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .blog-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .blog-post {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-post h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .blog-post p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -141,7 +185,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="https://brand.riotgames.com/static/11ef2be9896ef06c618fe4bd3956a0cc/8ec06/logo-d-4x-zoom2-000.webp" alt="Genshin Logo">
+            <img src="https://genshin.mihoyo.com/_nuxt/img/logo.5e0f6b4.png" alt="Genshin Logo">
         </div>
         <nav>
             <ul>
@@ -152,31 +196,59 @@
         </nav>
     </header>
 
-    <section class="upload-section">
-        <h1>Upload Your Files or Videos</h1>
-        <p>Securely upload your files or videos using GoFile.io</p>
+    <div class="container">
+        <section class="upload-section">
+            <h1>Upload Your Files or Videos</h1>
+            <p>Securely upload your files or videos using GoFile.io</p>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-button active" onclick="openTab('files')">Upload Files</button>
-            <button class="tab-button" onclick="openTab('videos')">Upload Videos</button>
-        </div>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab('files')">Upload Files</button>
+                <button class="tab-button" onclick="openTab('videos')">Upload Videos</button>
+            </div>
 
-        <!-- Tab Content -->
-        <div id="files" class="tab-content active">
-            <form id="uploadFormFiles">
-                <button type="button" onclick="redirectToGoFile()">Upload Files via GoFile.io</button>
-            </form>
-        </div>
+            <!-- Tab Content -->
+            <div id="files" class="tab-content active">
+                <form id="uploadFormFiles">
+                    <button type="button" onclick="redirectToGoFile()">Upload Files via GoFile.io</button>
+                </form>
+            </div>
 
-        <div id="videos" class="tab-content">
-            <form id="uploadFormVideos">
-                <button type="button" onclick="redirectToGoFile()">Upload Videos via GoFile.io</button>
-            </form>
-        </div>
+            <div id="videos" class="tab-content">
+                <form id="uploadFormVideos">
+                    <button type="button" onclick="redirectToGoFile()">Upload Videos via GoFile.io</button>
+                </form>
+            </div>
 
-        <div id="uploadStatus"></div>
-    </section>
+            <div id="uploadStatus"></div>
+        </section>
+
+        <section class="blog-section">
+            <h2>Latest Blog Posts</h2>
+            <div class="blog-post">
+                <h3>Introduction to Genshin Impact</h3>
+                <p>Genshin Impact is an open-world action role-playing game developed and published by miHoYo. It was released in September 2020 and has become one of the most popular games in the world. The game features a vast, beautiful world to explore, a variety of characters to collect and develop, and engaging gameplay mechanics.</p>
+            </div>
+            <div class="blog-post">
+                <h3>Top Tips for Beginners</h3>
+                <p>If you're new to Genshin Impact, here are some tips to help you get started:</p>
+                <ul>
+                    <li>Explore the world and complete quests to earn rewards.</li>
+                    <li>Collect and upgrade characters to build a strong team.</li>
+                    <li>Participate in daily and weekly challenges for additional rewards.</li>
+                </ul>
+            </div>
+            <div class="blog-post">
+                <h3>Best Builds for Each Character</h3>
+                <p>Each character in Genshin Impact has unique strengths and weaknesses. Here are some recommended builds:</p>
+                <ul>
+                    <li><strong>Keqing</strong>: Pyro Sub-DPS</li>
+                    <li><strong>Xingqiu</strong>: Hydro Main DPS</li>
+                    <li><strong>Diluc</strong>: Pyro Main DPS</li>
+                </ul>
+            </div>
+        </section>
+    </div>
 
     <footer>
         <p>&copy; 2023 Genshin-Inspired File Upload</p>
