@@ -1,204 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <style>
-    /* General Styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestial Archive</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #2b3256;
+            --secondary: #fad64b;
+            --accent: #e74c3c;
+            --dark: #1a1f38;
+            --light: #f4f6f9;
+        }
 
-    /* Navigation Bar */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #333;
-      padding: 1rem 2rem;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, var(--dark), var(--primary));
+            color: var(--light);
+            min-height: 100vh;
+        }
 
-    nav .logo {
-      color: white;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+        /* Navigation */
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
 
-    nav .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 1rem;
-    }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(250, 214, 75, 0.3);
+        }
 
-    nav .nav-links li a {
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-    }
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 100px;
+            padding: 2rem;
+        }
 
-    nav .nav-links li a:hover {
-      color: #f39c12;
-    }
+        /* Tabs System */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
 
-    /* Hero Section */
-    .hero {
-      background: url('https://fastcdn.hoyoverse.com/content-v2/hk4e/129688/52ce6d5c094b1d0694e7d07524380d48_7075134277339798191.jpg') no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 5rem 1rem;
-    }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
 
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
+        .tab-btn.active {
+            background: var(--secondary);
+            color: var(--dark);
+            box-shadow: 0 0 15px rgba(250, 214, 75, 0.3);
+        }
 
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
 
-    .hero .cta-button {
-      background-color: #f39c12;
-      color: white;
-      padding: 0.8rem 2rem;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .hero .cta-button:hover {
-      background-color: #e67e22;
-    }
+        /* Upload Cards */
+        .upload-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    /* File Upload Section */
-    .upload-section {
-      padding: 2rem;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
+        .upload-header {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
 
-    .upload-section input[type="file"] {
-      margin-bottom: 1rem;
-    }
+        /* File Input Styling */
+        .file-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed var(--secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    /* Tile Layout for Uploaded Files */
-    .tile-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 2rem;
-      justify-content: center;
-    }
+        .file-input:hover {
+            background: rgba(250, 214, 75, 0.1);
+        }
 
-    .tile {
-      width: 200px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      overflow: hidden;
-      background-color: white;
-    }
+        /* Media Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
 
-    .tile img, .tile video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
 
-    .tile p {
-      padding: 0.5rem;
-      text-align: center;
-      margin: 0;
-      font-size: 0.9rem;
-    }
+        .media-item:hover {
+            transform: translateY(-5px);
+        }
 
-    /* Footer */
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
+        .media-item img, .media-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .download-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #ffeb3b;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            padding: 1.5rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="logo">MyWebsite</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>
+    <nav class="navbar">
+        <div class="logo">Celestial Archive</div>
+    </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple and clean website design.</p>
-    <a href="#" class="cta-button">Learn More</a>
-  </section>
+    <div class="container">
+        <!-- Tabs System -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('images')">Images</button>
+            <button class="tab-btn" onclick="switchTab('videos')">Videos</button>
+            <button class="tab-btn" onclick="switchTab('links')">Direct Links</button>
+        </div>
 
-  <!-- File Upload Section -->
-  <section class="upload-section">
-    <h2>Upload Images or Videos</h2>
-    <input type="file" id="file-upload" accept="image/*, video/*" multiple>
-    <p>Supported formats: JPEG, PNG, GIF, MP4, etc.</p>
-  </section>
+        <!-- Images Tab -->
+        <div id="images" class="tab-content active">
+            <div class="upload-card">
+                <h2 class="upload-header">Upload Images</h2>
+                <label class="file-input">
+                    <input type="file" accept="image/*" multiple hidden>
+                    Drag & Drop or Click to Upload
+                </label>
+                <div class="media-grid" id="image-grid"></div>
+            </div>
+        </div>
 
-  <!-- Tile Layout for Uploaded Files -->
-  <div class="tile-container" id="tile-container">
-    <!-- Uploaded files will appear here -->
-  </div>
+        <!-- Videos Tab -->
+        <div id="videos" class="tab-content">
+            <div class="upload-card">
+                <h2 class="upload-header">Upload Videos</h2>
+                <label class="file-input">
+                    <input type="file" accept="video/*" multiple hidden>
+                    Drag & Drop or Click to Upload
+                </label>
+                <div class="media-grid" id="video-grid"></div>
+            </div>
+        </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2023 MyWebsite. All rights reserved.</p>
-  </footer>
+        <!-- Direct Links Tab -->
+        <div id="links" class="tab-content">
+            <div class="upload-card">
+                <h2 class="upload-header">Add Direct Links</h2>
+                <div class="link-form">
+                    <input type="text" placeholder="File Name" id="link-name">
+                    <input type="url" placeholder="Download URL" id="link-url">
+                    <button onclick="addLink()">Add Link</button>
+                </div>
+                <div class="media-grid" id="link-grid"></div>
+            </div>
+        </div>
+    </div>
 
-  <!-- JavaScript -->
-  <script>
-    // File Upload and Display Logic
-    const fileUpload = document.getElementById('file-upload');
-    const tileContainer = document.getElementById('tile-container');
+    <footer>
+        <p>&copy; 2023 Celestial Archive. All rights reserved.</p>
+    </footer>
 
-    fileUpload.addEventListener('change', (event) => {
-      const files = event.target.files;
+    <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
 
-      for (const file of files) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const tile = document.createElement('div');
-          tile.className = 'tile';
+        // File Upload Handling
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const files = e.target.files;
+                const gridId = `${this.closest('.tab-content').id}-grid`;
+                
+                for (const file of files) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const mediaItem = document.createElement('div');
+                        mediaItem.className = 'media-item';
+                        
+                        if (file.type.startsWith('image/')) {
+                            mediaItem.innerHTML = `
+                                <img src="${e.target.result}" alt="${file.name}">
+                                <button class="download-btn" onclick="downloadFile('${file.name}', '${e.target.result}')">Download</button>
+                            `;
+                        } else if (file.type.startsWith('video/')) {
+                            mediaItem.innerHTML = `
+                                <video controls>
+                                    <source src="${e.target.result}" type="${file.type}">
+                                </video>
+                                <button class="download-btn" onclick="downloadFile('${file.name}', '${e.target.result}')">Download</button>
+                            `;
+                        }
+                        
+                        document.getElementById(gridId).appendChild(mediaItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
 
-          if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            tile.appendChild(img);
-          } else if (file.type.startsWith('video/')) {
-            const video = document.createElement('video');
-            video.src = e.target.result;
-            video.controls = true;
-            tile.appendChild(video);
-          }
+        // Direct Links Handling
+        function addLink() {
+            const name = document.getElementById('link-name').value;
+            const url = document.getElementById('link-url').value;
+            
+            const linkItem = document.createElement('div');
+            linkItem.className = 'media-item';
+            linkItem.innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); height: 200px; display: flex; align-items: center; justify-content: center;">
+                    <p>${name}</p>
+                </div>
+                <a href="${url}" class="download-btn" download>Download</a>
+            `;
+            
+            document.getElementById('link-grid').appendChild(linkItem);
+            
+            // Clear inputs
+            document.getElementById('link-name').value = '';
+            document.getElementById('link-url').value = '';
+        }
 
-          const fileName = document.createElement('p');
-          fileName.textContent = file.name;
-          tile.appendChild(fileName);
-
-          tileContainer.appendChild(tile);
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
+        // Download Functionality
+        function downloadFile(filename, dataUrl) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </body>
 </html>
