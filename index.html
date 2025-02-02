@@ -75,6 +75,47 @@
       background-color: #e67e22;
     }
 
+    /* File Upload Section */
+    .upload-section {
+      padding: 2rem;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+
+    .upload-section input[type="file"] {
+      margin-bottom: 1rem;
+    }
+
+    /* Tile Layout for Uploaded Files */
+    .tile-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 2rem;
+      justify-content: center;
+    }
+
+    .tile {
+      width: 200px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: white;
+    }
+
+    .tile img, .tile video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .tile p {
+      padding: 0.5rem;
+      text-align: center;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
     /* Footer */
     footer {
       background-color: #333;
@@ -106,6 +147,18 @@
     <a href="#" class="cta-button">Learn More</a>
   </section>
 
+  <!-- File Upload Section -->
+  <section class="upload-section">
+    <h2>Upload Images or Videos</h2>
+    <input type="file" id="file-upload" accept="image/*, video/*" multiple>
+    <p>Supported formats: JPEG, PNG, GIF, MP4, etc.</p>
+  </section>
+
+  <!-- Tile Layout for Uploaded Files -->
+  <div class="tile-container" id="tile-container">
+    <!-- Uploaded files will appear here -->
+  </div>
+
   <!-- Footer -->
   <footer>
     <p>&copy; 2023 MyWebsite. All rights reserved.</p>
@@ -113,10 +166,38 @@
 
   <!-- JavaScript -->
   <script>
-    // Example: Add interactivity to the CTA button
-    const ctaButton = document.querySelector('.cta-button');
-    ctaButton.addEventListener('click', () => {
-      alert('Thanks for clicking!');
+    // File Upload and Display Logic
+    const fileUpload = document.getElementById('file-upload');
+    const tileContainer = document.getElementById('tile-container');
+
+    fileUpload.addEventListener('change', (event) => {
+      const files = event.target.files;
+
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const tile = document.createElement('div');
+          tile.className = 'tile';
+
+          if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            tile.appendChild(img);
+          } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.src = e.target.result;
+            video.controls = true;
+            tile.appendChild(video);
+          }
+
+          const fileName = document.createElement('p');
+          fileName.textContent = file.name;
+          tile.appendChild(fileName);
+
+          tileContainer.appendChild(tile);
+        };
+        reader.readAsDataURL(file);
+      }
     });
   </script>
 </body>
