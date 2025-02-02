@@ -3,73 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Genshin-Inspired Site with Firebase Storage</title>
+  <title>Genshin-Inspired Storage Site</title>
   <style>
-    /* Custom background image styling */
+    /* Genshin-Inspired Theme */
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: "Arial", sans-serif;
       background: url('https://your-username.github.io/your-repo/path-to-background.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      color: #ffffff;
+      text-align: center;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.7);
-      max-width: 800px;
+      background: rgba(0, 0, 0, 0.8);
+      max-width: 600px;
       margin: 50px auto;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.8);
     }
 
     h1, h2 {
-      text-align: center;
-    }
-
-    .upload-section, .download-section {
-      margin-top: 30px;
-    }
-
-    .preview {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .preview img,
-    .preview video {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #fff;
-      border-radius: 4px;
+      color: #FFD700; /* Genshin Gold Color */
     }
 
     input[type="file"] {
       display: block;
-      margin: 10px auto;
+      margin: 15px auto;
+      padding: 10px;
+      border: 2px solid #FFD700;
+      background: #333;
+      color: white;
+      border-radius: 5px;
     }
 
     button {
       display: block;
-      margin: 10px auto;
-      padding: 8px 16px;
+      margin: 15px auto;
+      padding: 10px 20px;
       font-size: 16px;
+      color: white;
+      background: #FFD700;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
+      transition: 0.3s;
     }
 
-    a.download-link {
+    button:hover {
+      background: #ffbb00;
+    }
+
+    .preview {
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+    }
+
+    .preview img, .preview video {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #FFD700;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    .download-link {
       display: block;
-      text-align: center;
       margin: 10px 0;
-      color: #00f;
-      text-decoration: underline;
+      color: #00ffea;
+      font-size: 18px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .download-link:hover {
+      color: #ffbb00;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to My Genshin-Inspired Site</h1>
-    <p>This site lets you upload files to Firebase Storage and download hosted files.</p>
+    <h1>Welcome to the Genshin-Inspired Upload Site</h1>
+    <p>Upload images, videos, and files to Firebase Storage & get a download link.</p>
 
     <!-- Upload Section -->
     <div class="upload-section">
@@ -79,11 +98,10 @@
       <div class="preview" id="previewArea"></div>
     </div>
 
-    <!-- Download Section (Static Links Example) -->
+    <!-- Download Section -->
     <div class="download-section">
       <h2>Downloads</h2>
       <p>Click on a file to download it:</p>
-      <!-- Replace these with your own file URLs -->
       <a class="download-link" href="https://your-username.github.io/your-repo/assets/files/sample.pdf" download>Download Sample PDF</a>
       <a class="download-link" href="https://your-username.github.io/your-repo/assets/files/sample.zip" download>Download Sample ZIP</a>
     </div>
@@ -91,11 +109,10 @@
 
   <!-- Firebase Integration -->
   <script type="module">
-    // Import the Firebase SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 
-    // Your Firebase configuration
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyDi3dNZSpvIy-ECU8BccC9OtzWoNg4zM1I",
       authDomain: "yasss-3616b.firebaseapp.com",
@@ -112,12 +129,12 @@
 
     console.log("Firebase initialized successfully!");
 
-    // Get references to DOM elements
+    // DOM Elements
     const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
     const previewArea = document.getElementById('previewArea');
 
-    // Handle the upload button click
+    // Upload File to Firebase
     uploadButton.addEventListener('click', () => {
       const file = fileInput.files[0];
       if (!file) {
@@ -125,11 +142,11 @@
         return;
       }
 
-      // Create a reference to the file in Firebase Storage
+      // Create Storage Reference
       const storageRef = ref(storage, 'uploads/' + file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      // Monitor the upload progress
+      // Upload Progress
       uploadTask.on('state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -140,12 +157,12 @@
           alert("Upload failed: " + error.message);
         },
         () => {
-          // Get the file's download URL
+          // Get the Download URL
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
             previewArea.innerHTML = ""; // Clear previous preview
 
-            // For images or videos, preview them. For other files, provide a download link.
+            // Preview Images & Videos, or show a download link
             if (file.type.startsWith('image/')) {
               const img = document.createElement('img');
               img.src = downloadURL;
