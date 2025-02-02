@@ -76,9 +76,7 @@
       <h2>Upload & Preview</h2>
       <input type="file" id="fileInput" accept="image/*,video/*,.pdf,.docx,.txt" />
       <button id="uploadButton">Upload to Firebase</button>
-      <div class="preview" id="previewArea">
-        <!-- Preview or download link will be shown here -->
-      </div>
+      <div class="preview" id="previewArea"></div>
     </div>
 
     <!-- Download Section (Static Links Example) -->
@@ -91,69 +89,61 @@
     </div>
   </div>
 
-  <!-- Firebase App (the core Firebase SDK) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <!-- Firebase Storage SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
+  <!-- Firebase Integration -->
   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    // Import the Firebase SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDi3dNZSpvIy-ECU8BccC9OtzWoNg4zM1I",
-    authDomain: "yasss-3616b.firebaseapp.com",
-    projectId: "yasss-3616b",
-    storageBucket: "yasss-3616b.firebasestorage.app",
-    messagingSenderId: "204233286587",
-    appId: "1:204233286587:web:85e60c9442f4c042779a9e",
-    measurementId: "G-FLD486DH65"
-  };
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDi3dNZSpvIy-ECU8BccC9OtzWoNg4zM1I",
+      authDomain: "yasss-3616b.firebaseapp.com",
+      projectId: "yasss-3616b",
+      storageBucket: "yasss-3616b.appspot.com",
+      messagingSenderId: "204233286587",
+      appId: "1:204233286587:web:85e60c9442f4c042779a9e",
+      measurementId: "G-FLD486DH65"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    console.log("Firebase initialized successfully!");
+
     // Get references to DOM elements
     const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
     const previewArea = document.getElementById('previewArea');
 
     // Handle the upload button click
-    uploadButton.addEventListener('click', function() {
+    uploadButton.addEventListener('click', () => {
       const file = fileInput.files[0];
       if (!file) {
         alert("Please select a file first.");
         return;
       }
 
-      // Create a storage reference in the "uploads" folder with the file's name.
-      const storageRef = storage.ref('uploads/' + file.name);
-      const uploadTask = storageRef.put(file);
+      // Create a reference to the file in Firebase Storage
+      const storageRef = ref(storage, 'uploads/' + file.name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
       // Monitor the upload progress
       uploadTask.on('state_changed',
-        function(snapshot) {
-          // Progress function: show upload progress in the console (or add a progress bar)
+        (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log('Upload is ' + progress.toFixed(2) + '% done');
         },
-        function(error) {
-          // Error function
+        (error) => {
           console.error('Upload failed:', error);
           alert("Upload failed: " + error.message);
         },
-        function() {
-          // Completion function: retrieve the download URL
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        () => {
+          // Get the file's download URL
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log('File available at', downloadURL);
-            // Clear previous preview content
-            previewArea.innerHTML = "";
+            previewArea.innerHTML = ""; // Clear previous preview
 
             // For images or videos, preview them. For other files, provide a download link.
             if (file.type.startsWith('image/')) {
